@@ -45,14 +45,14 @@ In Laravel questo risultato lo otterrei così.
 /** MODEL **/
 
 Author extends Model {
-   Protected $table = ‘authors’;
+   Protected $table = 'authors’;
 
    public function scopeStartingWith($query, $name) {
-      return $query->where(‘name’, ‘LIKE’, $name);
+      return $query->where('name’, 'LIKE’, $name);
    }
 
    public function scopeBornIn($query, $nationality) {
-      return $query->where(‘nationality’, $nationality);
+      return $query->where('nationality’, $nationality);
    }
 
    public function books()
@@ -63,8 +63,8 @@ Author extends Model {
 
 /** CONTROLLER **/
 
-// Elenco degli autori americani che iniziano con ‘Asim’ e dei loro libri
-$authors = Author::startingWith(‘Asim’)->bornIn(‘US’)->with(‘books’);
+// Elenco degli autori americani che iniziano con 'Asim’ e dei loro libri
+$authors = Author::startingWith('Asim’)->bornIn('US’)->with('books’);
 
 return response()->json($authors, 200);
 ```
@@ -89,23 +89,23 @@ $statement->execute([':name' => ’Asim%’, ':nationality' => 'US']);
 $authors = [];
 
 while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-    $authorId = $row[‘id’];
+    $authorId = $row['id’];
 
     // Aggrego le informazioni dell’autore
     if (!isset($authors[$authorId])) {
         $authors[$authorId] = [
-            ‘id’          => $authorId,
-            ‘name’        => $row[‘name’],
-            ‘nationality’ => $row[‘nationality’],
-            ‘books’       => []
+            'id’          => $authorId,
+            'name’        => $row['name’],
+            'nationality’ => $row['nationality’],
+            'books’       => []
         ];
     }
 
     // Aggiungo le informazioni sui libri
-    $authors[$authorId][‘books’][] = [
-        ‘id’    => $row[‘book_id’],
-        ‘title’ => $row[‘book_title’],
-        ‘year’  => $row[‘book_year’]
+    $authors[$authorId]['books’][] = [
+        'id’    => $row['book_id’],
+        'title’ => $row['book_title’],
+        'year’  => $row['book_year’]
     ];
 }
 
