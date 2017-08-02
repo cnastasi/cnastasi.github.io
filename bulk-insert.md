@@ -177,6 +177,7 @@ Questo è anche il modo che viene preferito dalla maggior parte
 degli sviluppatori Laravel.
 
 Proviamo quindi a capire quanto questo codice sia efficiente.
+
 ```bash
 php artisan benchmark:eloquent1 1
 php artisan benchmark:eloquent1 10
@@ -185,13 +186,16 @@ php artisan benchmark:eloquent1 1000
 php artisan benchmark:eloquent1 10000
 ```
 Con il relativo risultato.
-```
-Eloquent (new every iteration)   | 0.011 sec  | 1 samples      | 11.233 x10^-3 sec/sample | 9.64 MB | 9.91 MB
-Eloquent (new every iteration)   | 0.035 sec  | 10 samples     | 3.543 x10^-3 sec/sample  | 9.64 MB | 9.91 MB
-Eloquent (new every iteration)   | 0.309 sec  | 100 samples    | 3.092 x10^-3 sec/sample  | 9.64 MB | 9.91 MB
-Eloquent (new every iteration)   | 3.068 sec  | 1000 samples   | 3.068 x10^-3 sec/sample  | 9.64 MB | 9.91 MB
-Eloquent (new every iteration)   | 30.937 sec | 10000 samples  | 3.094 x10^-3 sec/sample  | 9.64 MB | 9.91 MB
-```
+
+| Execution (sec)| # Samples | sec x sample  | MB Usage | MB Peak |
+| :------------: | :-------: | :-----------: | :------: | :-----: |
+| 0.011          | 1         | 11.233 x10^-3 | 9.64     | 9.91    |
+| 0.035          | 10        | 3.543 x10^-3  | 9.64     | 9.91    |
+| 0.309          | 100       | 3.092 x10^-3  | 9.64     | 9.91    |
+| 3.068          | 1K        | 3.068 x10^-3  | 9.64     | 9.91    |
+| 30.937         | 10K       | 3.094 x10^-3  | 9.64     | 9.91    |
+
+
 L'andamento è lineare, con un consumo di memoria apparentemente costante.
 Mi aspetterei quindi che con 1 milione di record il tempo di esecuzione
 duri circa 3000 secondi (pari a 50 minuti) e, di conseguenza, con 10
