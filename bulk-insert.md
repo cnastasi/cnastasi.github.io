@@ -9,11 +9,11 @@ Permette la scrittura di query anche molto complesse con poche righe di
 codice, aumentando anche la leggibilità del codice, rendendolo più
 semantico ed auto documentante.
 
-Prendiamo ad esempio un’ipotetica applicazione di gestione di
+Prendiamo ad esempio un'ipotetica applicazione di gestione di
 biblioteche.
 Uno dei servizi disponibili è sicuramente quello di elenco degli autori
 e dei rispettivi libri scritti. Mi aspetto quindi di avere un servizio
-REST che mi ritorni un json all’incirca così (in versione molto
+REST che mi ritorni un json all'incirca così (in versione molto
 semplificata).
 
 ```php
@@ -45,14 +45,14 @@ In Laravel questo risultato lo otterrei così.
 /** MODEL **/
 
 Author extends Model {
-   Protected $table = 'authors’;
+   Protected $table = 'authors';
 
    public function scopeStartingWith($query, $name) {
-      return $query->where('name’, 'LIKE’, $name);
+      return $query->where('name', 'LIKE', $name);
    }
 
    public function scopeBornIn($query, $nationality) {
-      return $query->where('nationality’, $nationality);
+      return $query->where('nationality', $nationality);
    }
 
    public function books()
@@ -63,8 +63,8 @@ Author extends Model {
 
 /** CONTROLLER **/
 
-// Elenco degli autori americani che iniziano con 'Asim’ e dei loro libri
-$authors = Author::startingWith('Asim’)->bornIn('US’)->with('books’);
+// Elenco degli autori americani che iniziano con 'Asim' e dei loro libri
+$authors = Author::startingWith('Asim')->bornIn('US')->with('books');
 
 return response()->json($authors, 200);
 ```
@@ -73,7 +73,7 @@ Mentre lo stesso risultato, utilizzando PDO invece che Eloquent, lo si
 otterrebbe con questo codice:
 
 ```php
-$db = /** Codice per ottenere l’istanza di PDO **/
+$db = /** Codice per ottenere l'istanza di PDO **/
 
 $sql = 'SELECT A.*, B.id as book_id, B.title as book_title, B.year as book_year
         FROM authors A
@@ -83,29 +83,29 @@ $sql = 'SELECT A.*, B.id as book_id, B.title as book_title, B.year as book_year
 
 $statement = $db->prepare($sql);
 
-$statement->execute([':name' => ’Asim%’, ':nationality' => 'US']);
+$statement->execute([':name' => 'Asim%', ':nationality' => 'US']);
 
 
 $authors = [];
 
 while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
-    $authorId = $row['id’];
+    $authorId = $row['id'];
 
-    // Aggrego le informazioni dell’autore
+    // Aggrego le informazioni dell'autore
     if (!isset($authors[$authorId])) {
         $authors[$authorId] = [
-            'id’          => $authorId,
-            'name’        => $row['name’],
-            'nationality’ => $row['nationality’],
-            'books’       => []
+            'id'          => $authorId,
+            'name'        => $row['name'],
+            'nationality' => $row['nationality'],
+            'books'       => []
         ];
     }
 
     // Aggiungo le informazioni sui libri
-    $authors[$authorId]['books’][] = [
-        'id’    => $row['book_id’],
-        'title’ => $row['book_title’],
-        'year’  => $row['book_year’]
+    $authors[$authorId]['books'][] = [
+        'id'    => $row['book_id'],
+        'title' => $row['book_title'],
+        'year'  => $row['book_year']
     ];
 }
 
