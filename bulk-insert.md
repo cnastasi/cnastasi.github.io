@@ -4,6 +4,31 @@
 Builder, Laravel, Optimization, Performance
 
 ## Introduzione
+Quante volte vi è capitato di dover caricare su database dei dati provenienti da un file csv fornito dal cliente? oppure 
+di fare il backup ed il restore dei dati da una versione di un sito ad un altro (e quindi senza la possibilità di usare un dump del database)? 
+
+L'algoritmo classico che viene utilizzato in questi casi è il seguente:
+
+* carichi il file sul server
+* lo apri
+* fai un ciclo che legge riga per riga
+* ad ogni riga fai l'insert su database
+
+Queste semplici istruzioni però, come molti di voi avranno sperimentato sulla loro pelle, al crescere delle
+righe da inserire, cresce anche il tempo necessario, fino ad arrivare anche a diverse ore. Ma è veramente questo l'unico modo per 
+eseguire questo genere di operazioni? non esiste qualcosa di più efficiente?
+
+La risposta è si, esiste. Però la soluzione non ve la darò subito. Vi condurrò invece attraverso un percorso
+che partirà dalla situazione meno efficiente fino ad arrivare ad una situazione ottimale. Proverò quindi a 
+farvi comprendere non solo il come, ma anche il perchè.
+
+Se però siete impazienti e volete avere subito la soluzione, cliccate qui!
+
+```
+NOTA: Nonostante l'articolo sia relativo al mondo Laravel, le conclusione a cui si arriva sono facilmente replicabili
+anche su altri framework, una volta compresi i principi.
+```
+
 Eloquent è uno strumento potentissimo.
 Permette la scrittura di query anche molto complesse con poche righe di
 codice, aumentando anche la leggibilità del codice, rendendolo più
@@ -16,26 +41,26 @@ e dei rispettivi libri scritti. Mi aspetto quindi di avere un servizio
 REST che mi ritorni un json all'incirca così (in versione molto
 semplificata).
 
-```php
+```json
 [
    {
-      “id”: 42,
-      “name”: “Asimov Isaac”,
-      “nationality”: “US”,
-      “books”: [
+      "id": 42,
+      "name": "Asimov Isaac",
+      "nationality": "US",
+      "books": [
          {
-            “id”: 456,
-            “title”: “Foundation”,
-            “year”: “1951”
+            "id": 456,
+            "title": "Foundation",
+            "year": "1951"
          },
          {
-            “id”: 4327,
-            “title”: “Foundation and Empire”,
-            “year”: “1952”
+            "id": 4327,
+            "title": "Foundation and Empire",
+            "year": "1952"
          }
       ]
    },
-   { … }
+   { /* … */ }
 ]
 ```
 
@@ -113,7 +138,7 @@ return response()->json($authors, 200);
 ```
 
 Eloquent quindi ci permette di astrarre meglio, di scrivere codice più
-chiaro e manutenibile, nascondendo però molto codice sotto il “cofano”.
+chiaro e manutenibile, nascondendo però molto codice sotto il "cofano".
 
 Laravel viene definito un framework general purpose nel senso che
 cerca di offire agli sviluppatori i tool necessari per risolvere le
