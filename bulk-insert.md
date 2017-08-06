@@ -60,7 +60,7 @@ semplificata).
          }
       ]
    },
-   { /* … */ }
+   { "id": "..." }
 ]
 ```
 
@@ -184,11 +184,24 @@ php artisan migrate
 I test, sotto forma di comando artisan, sono tutti disponibili sotto la
 cartella `app/Console/Commands`.
 
+Ogni classe di test implementa la seguente interfaccia: 
+
+```php
+interface BulkInsertTest {
+    public function bulkInsert(Callable $lineFactory):void;
+}
+```
+
+Dato che la lettura del file csv influisce in percentuale minima, passeremo alla funzione una funzione 
+anonima, 
+
 ### Esempio 1: Eloquent base
+Come primo esempio utilizzeremo quello che ci 
 Leggendo la documentazione di Laravel, uno dei modi per poter salvare un
 dato su DB è il seguente:
 
 ```php
+function bulkInsert(
     $user = new User();
 
     $user->name = $item['name'];
@@ -227,3 +240,5 @@ duri circa 3000 secondi (pari a 50 minuti) e, di conseguenza, con 10
 milioni di record, arrivare addirittura a 8 ore e 20 minuti. Un tempo
 decisamente non accettabile. Capiamo quindi se ed in che modo possiamo
 ottimizzare.
+
+## Esempio 2: Eloquent - 
